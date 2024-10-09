@@ -1,0 +1,31 @@
+Account:
+  email:
+    - "tom@domain.com"
+    - "jane@domain.com"
+    - "admin@domain.com"
+
+Credentials:
+  server:
+    - "server1.domain.com"
+    - "server2.domain.com"
+  username:
+    - "user1"
+    - "user2"
+  password:
+    - "pass1"
+    - "pass2"
+  port:
+    - 8080
+    - 9090
+
+Message:
+  sender:
+    - "alice@domain.com"
+    - "bob@domain.com"
+  content:
+    - "Hello, World!"
+    - "Important update"
+  subject:
+    - "Meeting"
+    - "Project Update"
+    - "Important Announcement"

@@ -14,13 +14,26 @@ Message:
     content: string
     subject: string
   actions:
-    - read
-    - delete
-    - create
+    - read:
+      - last
+      - all
+    - delete:
+      - last
+      - all
+    - create:
+      - one
   modifiers:
     last: integer
+    all: boolean
   parameters:
-    - all
+    - from
+    - on
+  prefix:
+    - for
+  suffix:
+    - with
+  hasMany:
+    - Account
 
 Email:
   suffix:
