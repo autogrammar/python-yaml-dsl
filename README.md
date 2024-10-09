@@ -13,8 +13,13 @@ pip install pyyaml inflect yaml
 ```
 
 ```bash
-python dsl.py dsl.yaml -n 10
-python dsl.py dsl.yaml -n 10 -o my_examples.yaml
-python dsl.py dsl.yaml properties.yaml -n 5 -o examples.yaml
-python dsl.py dsl.yaml private.yaml public.yaml -n 5 -o examples.yaml
+python dsl.py object.yaml private.yaml public.yaml -n 5 -o examples.yaml
+python dsl.py email/object.yaml email/private.yaml email/public.yaml -n 5 -o email/examples.yaml
+python -m unittest test_dsl.py
 ```
+
+## TODO
+- unit test
+- priv repo 
+- 
+- 

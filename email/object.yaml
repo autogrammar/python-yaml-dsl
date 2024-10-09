@@ -1,0 +1,47 @@
+Message:
+  patterns:
+    - "{action:create} {} with {public} and {object}"
+    - "{action:read} {many} {} with {public}"
+    - "{action:delete} {many} {} with {public}"
+#    - "{action:read,delete} {many} {} with {public}"
+  public:
+    date: datetime
+    sender: string
+    content: string
+    subject: string
+  action:
+    many:
+      - read
+      - delete
+    one:
+      - create
+    default:
+      - read
+  many:
+    - last: integer
+    - all
+  object:
+    - Account
+
+Account:
+  patterns:
+#    - "{} {public}"
+    - "{action:disconnect} {} {public}"
+    - "{action:connect} to {} {public} and {object}"
+  public:
+    email: string
+  private:
+    server: string
+    password: string
+    username: string
+    port: number
+  action:
+    one:
+      - connect
+      - disconnect
+    default:
+      - connect
+    end:
+      - connect
+  object:
+    - Message
