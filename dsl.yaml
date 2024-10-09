@@ -29,7 +29,6 @@ Email:
   prefix:
     - to
 
-
 Account:
   properties:
     email: text

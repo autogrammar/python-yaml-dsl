@@ -8,6 +8,7 @@ specifying the YAML file and optionally the number of examples:
 
 ```bash
 python dsl.py dsl.yaml -n 10
+python dsl.py dsl.yaml -n 10 -o my_examples.yaml
 ```
 
 Generated 10 examples:
