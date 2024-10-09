@@ -1,0 +1,19 @@
+# DSL Syntax
+Syntax:
+  - pattern: "{action} to {object|object} with {object}"
+    example:
+      - "connect to Account with Credentials"
+      - "connect to Email Account with Credentials"
+
+  - pattern: "{action|modifier|parameter} {object} from {property} {object}"
+    example:
+      - "create Message on tom@domain.com Account"
+      - "delete last 1 Message from tom@domain.com Account"
+      - "delete Message from tom@domain.com Account"
+      - "read Messages from tom@domain.com Account"
+      - "read all Messages from tom@domain.com Account"
+      - "read last 10 Messages from tom@domain.com Account"
+
+  - pattern: "{action} {entity}"
+    example:
+      - "disconnect tom@domain.com Account"

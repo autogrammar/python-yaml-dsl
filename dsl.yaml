@@ -1,0 +1,43 @@
+Credentials:
+  properties:
+    server: text
+    password: text
+    username: text
+    port: number
+  prefix:
+    - with
+
+Message:
+  properties:
+    date: datetime
+    sender: string
+    content: string
+    subject: string
+  actions:
+    - read
+    - delete
+    - create
+  modifiers:
+    last: integer
+  parameters:
+    - all
+
+Email:
+  suffix:
+    - Account
+    - Message
+  prefix:
+    - to
+
+
+Account:
+  properties:
+    email: text
+  actions:
+    - connect
+    - disconnect
+  hasMany:
+    - Message
+  prefix:
+    - to
+    - from
