@@ -7,7 +7,7 @@ The main purpose of this project is to help users define their YAML specificatio
 Run the script from the command line, specifying the YAML file and optionally the number of sentences: 
 
 ```bash
-python dsl.py object.yaml private.yaml public.yaml -n 5 -o sentences.yaml
+python sentence.py object.yaml private.yaml public.yaml -n 5 -o sentences.yaml
 ```
 
 ## Plik `object.yaml`
@@ -95,9 +95,8 @@ W ten sposób można stworzyć hierarchię budowania zdania, podmiot i przedmiot
 ## Przykłady poprawne
 ```yaml
 sentences:
-    - read Message with subject "Meeting" from Account email "tom@domain.com" 
-    - delete last 6 Message from Account email "tom@domain.com"
-    - create Message on Account email "tom@domain.com"
+    - read Message with subject "Meeting", Account email "tom@domain.com" 
+    - delete last 6 Message, Account email "tom@domain.com"
     - disconnect Account email "tom@domain.com"
     - delete last 95 Message with date sender "admin@domain.com" subject "Important Announcement"
     - connect to Account email "admin@domain.com", create Message with sender "bob@domain.com" content  "default_string" subject "Important Announcement", disconnect Account email "tom@domain.com"
@@ -130,12 +129,7 @@ Przykłady poniżej jest niepoprawne, ponieważ jest zastosowany drugi `sentence
 sentences:
 - connect to Account email "bob@domain.com"
 ```
-Przykłady poprawne nr 1
-```yaml
-sentences:
-- connect Account email "bob@domain.com"
-```
-Przykłady poprawne nr 2 z obiektem Message 
+Przykład poprawny z obiektem Message 
 ```yaml
 sentences:
 - connect to Account email "bob@domain.com", create Message with sender "default_string" subject "default_string" content "default_string"

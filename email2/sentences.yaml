@@ -1,1 +1,9 @@
-sentences: []
+sentences:
+    - read Message with subject "Meeting", Account email "tom@domain.com"
+    - delete last 6 Message, Account email "tom@domain.com"
+    - disconnect Account email "tom@domain.com"
+    - delete last 95 Message with date sender "admin@domain.com" subject "Important Announcement"
+    - connect to Account email "admin@domain.com", create Message with sender "bob@domain.com" content  "default_string" subject "Important Announcement", disconnect Account email "tom@domain.com"
+    - disconnect Account email "admin@domain.com"
+    - create Message with sender "bob@domain.com" content "Important update" subject "Project Update"
+    - connect to Account email "tom@domain.com", read all Message with sender "admin@domain.com" subject "Important Announcement"
