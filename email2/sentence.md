@@ -51,7 +51,7 @@ Message:
         content: string
         subject: string
     read:
-      sentence: "{action:read} {many} {} with {public}"
+      sentence: "{action} {many} {} with {public}"
       shell: "{}.sh {many} {action} {public}"
       public:
         from: datetime
@@ -64,7 +64,7 @@ Message:
         all: ''
         one: ''
     delete:
-      sentence: "{}.sh {modifier} {action} {public}"
+      sentence: "{} {modifier} {action} where {public}"
       shell: "{}.sh {modifier} {action} {public}"
       public:
         from: datetime
@@ -129,21 +129,37 @@ sentences:
     - disconnect Account email "tom@domain.com"
 ```
 
+W obiekcie lub akcji może znajdować się deklaracja object: Account, co oznacza, że zdanie musi zawierać również zdanie wygenerowane na podstawie obiektu zaleznego, jak 
+
+```yaml
+Message:
+  object: Account
+```
+w przykładzie Messages,  musi też zawierać zdanie z Account
+```yaml
+sentences:
+    - read Message with subject "Meeting", Account email "tom@domain.com" 
+    - delete last 6 Message, Account email "tom@domain.com"
+    - connect to Account email "tom@domain.com", delete last 95 Message with date sender "admin@domain.com" subject "Important Announcement"
+    - disconnect Account email "tom@domain.com"
+```
+
+
 ## Parametr default: connect
 
-Przykład konfiguracji `default: connect` oznacza, że gdy nie jest określona akcja w zdaniu, to domyślnie jest zdefiniowana w `default` czyli w tym przykładzie action `connect`
-
-
-
-## Przykłady poprawne
+Przykład konfiguracji `default: connect` oznacza, że gdy nie jest określona akcja w zdaniu, to domyślnie jest zdefiniowana w `default` jako opcjonalnie występująca w zdaniu. czyli w tym przykładzie action `connect`
 ```yaml
 sentences:
     - read Message with subject "Meeting", Account email "tom@domain.com" 
     - delete last 6 Message, Account email "tom@domain.com"
     - disconnect Account email "tom@domain.com"
-    - delete last 95 Message with date sender "admin@domain.com" subject "Important Announcement"
-    - connect to Account email "admin@domain.com", create Message with sender "bob@domain.com" content  "default_string" subject "Important Announcement", disconnect Account email "tom@domain.com"
-    - disconnect Account email "admin@domain.com"
+```
+zdanie `disconnect Account email "tom@domain.com"` zawiera disconnect, ponieważ nie jest on opcjonalny
+
+## Inne poprawne przykłady 
+```yaml
+sentences:
+    
     - create Message with sender "bob@domain.com" content "Important update" subject "Project Update"
     - connect to Account email "tom@domain.com", read all Message with sender "admin@domain.com" subject "Important Announcement"
 ```
@@ -197,7 +213,7 @@ Message:
         content: string
         subject: string
     read:
-      sentence: "{action:read} {many} {} with {public}"
+      sentence: "{action} {many} {} with {public}"
       shell: "{}.sh {many} {action} {public}"
       public:
         from: datetime

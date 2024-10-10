@@ -9,7 +9,7 @@ Message:
         content: string
         subject: string
     read:
-      sentence: "{action:read} {many} {} with {public}"
+      sentence: "{action} {many} {} with {public}"
       shell: "{}.sh {many} {action} {public}"
       public:
         from: datetime
@@ -22,7 +22,7 @@ Message:
         all: ''
         one: ''
     delete:
-      sentence: "{}.sh {modifier} {action} {public}"
+      sentence: "{} {modifier} {action} where {public}"
       shell: "{}.sh {modifier} {action} {public}"
       public:
         from: datetime

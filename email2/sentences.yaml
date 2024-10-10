@@ -1,12 +1,13 @@
 sentences:
-- connect to Account email "tom@domain.com", create Message with sender "bob@domain.com"
-  content "Meeting summary" subject "Important Announcement"
-- connect to Account email "admin@domain.com", {action:read} messages Message with
-  from "2023-12-31T01:59:59Z" to "2024-06-30" sender "alice@domain.com" content "Meeting
-  summary" subject "Weekly Report"
-- connect to Account email "admin@domain.com", create Message with sender "bob@domain.com"
-  content "Project status report" subject "Important Announcement"
-- connect to Account email "admin@domain.com", create Message with sender "tom@domain.com"
-  content "Important update" subject "Weekly Report"
-- connect to Account email "jane@domain.com", create Message with sender "tom@domain.com"
-  content "Important update" subject "Meeting"
+- 'create Message with sender "alice@domain.com" content "Reminder: Team building
+  event" subject "Meeting"'
+- connect to Account email "jane@domain.com", create Message with sender "alice@domain.com"
+  content "Meeting summary" subject "Team Notification"
+- connect to Account email "tom@domain.com", read messages Message with from "2023-12-31T01:59:59Z"
+  to "2023-12-31" sender "alice@domain.com" content "Project status report" subject
+  "Team Notification"
+- create Message with sender "alice@domain.com" content "Important update" subject
+  "Important Announcement"
+- 'connect to Account email "jane@domain.com", Message one delete where from "2023-06-15"
+  to "2023-12-31T23:59:59Z" sender "admin@domain.com" content "Reminder: Team building
+  event" subject "Meeting"'
