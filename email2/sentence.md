@@ -3,6 +3,13 @@
 DSL builder oparty na specyfikacjach YAML. Specyfikacja YAML jest zapisywana w pliku `object.yaml`.
 
 Ta implementacja obsługuje podstawowe reguły tworzenia zdań w oparciu o specyfikację YAML. Można ją rozszerzyć o bardziej zaawansowane reguły, jeśli to konieczne.
+Key features of this implementation:
+It uses the argparse module to handle command-line arguments.
+The generate_sentence function creates sentences based on the object and action specifications.
+It handles nested objects, modifiers, and public/private data as described in the documentation.
+The script generates random sentences by choosing random objects, actions, and values from the provided data.
+It supports optional parameters in sentences (e.g., ({action} to)) by including them in the sentence pattern on the enb of sentence
+
 
 Ten skrypt implementuje następujące funkcjonalności:
 - Wczytywanie specyfikacji YAML z plików `object.yaml`, `private.yaml` i `public.yaml`.
@@ -144,19 +151,19 @@ sentences:
 
 W object `Account` znajduje się
 `sentence: "({action} to) {} {public}"`
-Przykład tej konfiguracji oznacza, że zawartość `({action} to)` jest opcjonalnie występująca w zdaniu, czyli jak w tym przykładzie action `connect`:
+Przykład tej konfiguracji oznacza, że zawartość `({action} to)` jest opcjonalnie gdy występuje na końcu zdania, czyli jak w tym przykładzie action `connect`:
 ```yaml
 sentences:
     - connect to Account email "tom@domain.com", create Message with sender "bob@domain.com" content "default_string" subject "Important Announcement"
     - disconnect Account email "tom@domain.com"
+    - create Message with sender "bob@domain.com" content "Important update" subject "Project Update", Account email "tom@domain.com".    
 ```
 Zdanie `disconnect Account email "tom@domain.com"` nie ma nawiasów `()`, co oznacza, że nie ma tam opcjonalnej zawartości i zawiera `disconnect`.
 
 ## Inne poprawne przykłady 
 ```yaml
 sentences:
-    - create Message with sender "bob@domain.com" content "Important update" subject "Project Update"
-    - connect to Account email "tom@domain.com", read all Message with sender "admin@domain.com" subject "Important Announcement"
+    
 ```
 
 ## Błędne zastosowanie `sentence` pattern:
