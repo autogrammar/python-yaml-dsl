@@ -1,46 +1,33 @@
 Account:
   email:
-    "tom@domain.com":
-      Message:
-        sender:
-          - "alice@domain.com"
-          - "tom@domain.com"
-          - "admin@domain.com"
-        content:
-          - "Hello, World!"
-          - "Important update"
-          - "default_string"
-        subject:
-          - "Meeting"
-          - "Project Update"
-          - "Important Announcement"
-    "jane@domain.com":
-      Message:
-        sender:
-          - "alice@domain.com"
-          - "tom@domain.com"
-          - "admin@domain.com"
-        content:
-          - "Hello, World!"
-          - "Important update"
-          - "default_string"
-        subject:
-          - "Meeting"
-          - "Project Update"
-          - "Important Announcement"
+    - "tom@domain.com"
+    - "jane@domain.com"
+    - "admin@domain.com"
 
-    "admin@domain.com":
-      Message:
-        sender:
-          - "alice@domain.com"
-          - "bob@domain.com"
-          - "tom@domain.com"
-          - "admin@domain.com"
-        content:
-          - "Hello, World!"
-          - "Important update"
-          - "default_string"
-        subject:
-          - "Meeting"
-          - "Project Update"
-          - "Important Announcement"
+Message:
+  sender:
+    - "alice@domain.com"
+    - "bob@domain.com"
+    - "tom@domain.com"
+    - "admin@domain.com"
+  content:
+    - "Hello, World!"
+    - "Important update"
+    - "Meeting summary"
+    - "Project status report"
+    - "Reminder: Team building event"
+  subject:
+    - "Meeting"
+    - "Project Update"
+    - "Important Announcement"
+    - "Team Notification"
+    - "Weekly Report"
+  from:
+    - "2023-01-01"
+    - "2023-06-15"
+    - "2023-12-31T01:59:59Z"
+  to:
+    - "2023-12-31"
+    - "2024-06-30"
+    - "2023-12-31T23:59:59Z"
+

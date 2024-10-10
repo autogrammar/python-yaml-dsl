@@ -1,11 +1,12 @@
 ## Cel Projektu
 
 DSL builder based on yaml specifications Save YAML specification in a `object.yaml` file
-Ten skrypt implementuje następujące funkcjonalności:
+Ta prosta implementacja obsługuje podstawowe reguły tworzenia liczby mnogiej w języku angielskim. Możesz ją rozszerzyć o bardziej zaawansowane reguły, jeśli to konieczne.
 
+Ten skrypt implementuje następujące funkcjonalności:
 Wczytywanie specyfikacji YAML z plików `object.yaml`, `private.yaml` i `public.yaml`.
 Generowanie zdań na podstawie specyfikacji.
-Zapisywanie wygenerowanych zdań do pliku wyjściowego sentences.yaml.
+Zapisywanie wygenerowanych zdań do pliku wyjściowego `sentences.yaml`
 Skrypt można uruchomić z wiersza poleceń w następujący sposób:
 
 ```bash
@@ -21,6 +22,16 @@ Gdzie:
 
 Skrypt generuje zdania zgodnie z podaną specyfikacją, używając danych z plików public.yaml i private.yaml. 
 Generowane zdania są zapisywane do pliku `sentences.yaml` w formacie YAML 
+
+parametr `{public}` w `senntence`  oznacza, ze musimy podać co najmniej jeden parametr z listy `public` zdefiniowanych w akcji, jest on obligatoryjny
+Przykłady:
+
+```yaml
+sentences:
+    - connect to Account email "admin@domain.com", create Message with sender "bob@domain.com" content "default_string" subject "Important Announcement""
+    - disconnect Account email "tom@domain.com"
+```
+
  
 
 ## Plik `object.yaml`
@@ -95,6 +106,10 @@ Account:
         port: number
 
 ```
+
+Generowanie zdań uwzględnia modyfikatory i obiekty zagnieżdżone.
+Używane są wartości z pliku public.yaml, a w przypadku ich braku, generowane są wartości domyślne.
+Aby uwzględnić regułę odmiany liczby mnogiej dla języka angielskiego, możemy dodać prostą funkcję pomocniczą:
 
 `{}` - oznacza aktualny `object` czyli oznacza to pattern:
 - "{action} {} {public}"
@@ -247,50 +262,36 @@ W pliku `public.yaml` są przechowywane wartości, które są używane w sentenc
 ```yaml
 Account:
   email:
-    "tom@domain.com":
-      Message:
-        sender:
-          - "alice@domain.com"
-          - "tom@domain.com"
-          - "admin@domain.com"
-        content:
-          - "Hello, World!"
-          - "Important update"
-          - "default_string"
-        subject:
-          - "Meeting"
-          - "Project Update"
-          - "Important Announcement"
-    "jane@domain.com":
-      Message:
-        sender:
-          - "alice@domain.com"
-          - "tom@domain.com"
-          - "admin@domain.com"
-        content:
-          - "Hello, World!"
-          - "Important update"
-          - "default_string"
-        subject:
-          - "Meeting"
-          - "Project Update"
-          - "Important Announcement"
+    - "tom@domain.com"
+    - "jane@domain.com"
+    - "admin@domain.com"
 
-    "admin@domain.com":
-      Message:
-        sender:
-          - "alice@domain.com"
-          - "bob@domain.com"
-          - "tom@domain.com"
-          - "admin@domain.com"
-        content:
-          - "Hello, World!"
-          - "Important update"
-          - "default_string"
-        subject:
-          - "Meeting"
-          - "Project Update"
-          - "Important Announcement"
+Message:
+  sender:
+    - "alice@domain.com"
+    - "bob@domain.com"
+    - "tom@domain.com"
+    - "admin@domain.com"
+  content:
+    - "Hello, World!"
+    - "Important update"
+    - "Meeting summary"
+    - "Project status report"
+    - "Reminder: Team building event"
+  subject:
+    - "Meeting"
+    - "Project Update"
+    - "Important Announcement"
+    - "Team Notification"
+    - "Weekly Report"
+  from:
+    - "2023-01-01"
+    - "2023-06-15"
+    - "2023-12-31T01:59:59Z"
+  to:
+    - "2023-12-31"
+    - "2024-06-30"
+    - "2023-12-31T23:59:59Z"
 
 ```
 
