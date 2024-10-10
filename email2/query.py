@@ -7,7 +7,7 @@ def load_yaml(file_path: str) -> Dict[str, Any]:
     with open(file_path, 'r') as file:
         return yaml.safe_load(file)
 
-def generate_shell_command(sentence: str, objects: Dict[str, Any]) -> str:
+def generate_shell_command(sentence: str, objects: Dict[str, Any], prefix = '--') -> str:
     words = sentence.split()
     object_name = next(word for word in words if word in objects)
     action = words[0] if words[0] != object_name else words[1]
@@ -38,19 +38,19 @@ def generate_shell_command(sentence: str, objects: Dict[str, Any]) -> str:
         object_name,
         action=action,
         modifier=modifier,
-        public=' '.join(f'{k} "{v}"' for k, v in public_params.items())
+        public=' '.join(f'{prefix}{k} "{v}"' for k, v in public_params.items())
     )
     
     return shell_command.strip()
 
-def main(sentences_file: str, object_file: str, output_file: str):
+def main(sentences_file: str, object_file: str, output_file: str, prefix: str):
     sentences = load_yaml(sentences_file)['sentences']
     objects = load_yaml(object_file)
     
     query_data = {
         'query': {
             'sentences': sentences,
-            'shell': [generate_shell_command(sentence, objects) for sentence in sentences]
+            'shell': [generate_shell_command(sentence, objects, prefix) for sentence in sentences]
         }
     }
     
@@ -58,8 +58,12 @@ def main(sentences_file: str, object_file: str, output_file: str):
         yaml.dump(query_data, file, default_flow_style=False)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Usage: python query.py <sentences_file> <object_file> <output_file>")
+    if len(sys.argv) < 4:
+        print("Usage: python query.py <sentences_file> <object_file> <output_file> <prefix_param>")
         sys.exit(1)
-    
-    main(sys.argv[1], sys.argv[2], sys.argv[3])
+
+    prefix = '--'
+    if len(sys.argv) > 4:
+        prefix = sys.argv[4]
+
+    main(sys.argv[1], sys.argv[2], sys.argv[3], prefix)

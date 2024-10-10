@@ -51,6 +51,10 @@ Run the script from the command line, specifying the YAML files
 python query.py sentences.yaml object.yaml query.yaml
 ```
 
+```bash
+python query.py sentences.yaml object.yaml query.yaml '--'
+```
+
 1. `sentences.yaml` - zawiera wcześniej wygenereowane zdania, które bedą zmieniane na query w shell.yaml
 2. `object.yaml` - zawiera specyfikację obiektów, akcji i wzorców dla poleceń shell
 3. `public.yaml` - zawiera publiczne dane używane do generowania poleceń

@@ -1,8 +1,4 @@
 sentences:
-- disconnect Account email "admin@domain.com"
-- disconnect Account email "admin@domain.com"
-- create Message with sender "bob@domain.com" content "Meeting summary" subject "Team
-  Notification"
-- 'Account email "jane@domain.com", create Message with sender "bob@domain.com" content
-  "Reminder: Team building event" subject "Weekly Report"'
-- disconnect Account email "admin@domain.com"
+  - disconnect Account email "admin@domain.com"
+  - create Message with sender "bob@domain.com" content "Meeting summary" subject "Team Notification"
+  - disconnect Account email "admin@domain.com"
