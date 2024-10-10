@@ -48,7 +48,7 @@ Ta dokumentacja powinna pomóc w zrozumieniu celu i struktury projektu generator
 Run the script from the command line, specifying the YAML files 
 
 ```bash
-python query.py query.yaml object.yaml private.yaml public.yaml
+python query.py sentences.yaml object.yaml query.yaml
 ```
 
 1. `sentences.yaml` - zawiera wcześniej wygenereowane zdania, które bedą zmieniane na query w shell.yaml
@@ -165,47 +165,3 @@ Account:
 przykład:
 - disconnect Account email "tom@domain.com"
 
-
-
-## Plik `public.yaml`
-
-W pliku `public.yaml` są przechowywane wartości, które są używane w `sentences.yaml` oraz dane generowane w trakcie polaczenia z uslugami, pobierane do cache
-```yaml
-Account:
-  email:
-    - "tom@domain.com"
-    - "jane@domain.com"
-    - "admin@domain.com"
-
-Message:
-  sender:
-    - "alice@domain.com"
-    - "bob@domain.com"
-  content:
-    - "Hello, World!"
-    - "Important update"
-  subject:
-    - "Meeting"
-    - "Project Update"
-    - "Important Announcement"
-```
-
-
-## Plik `private.yaml`
-
-Prywatne dane potrzebne do uruchomienia uslug przez skrypt w python w pliku `private.yaml`
-```bash
-Account:
-  server:
-    - "server1.domain.com"
-    - "server2.domain.com"
-  username:
-    - "user1"
-    - "user2"
-  password:
-    - "pass1"
-    - "pass2"
-  port:
-    - 8080
-    - 9090
-```    

@@ -1,13 +1,14 @@
 query:
   sentences:
-    - connect to Account email "admin@domain.com", create Message with sender "tom@domain.com" content "Meeting summary" subject "Weekly Report"
-    - read one Message with from "2023-01-01" to "2023-12-31" sender "alice@domain.com"
-    - read all Message with from "2023-12-31T01:59:59Z" to "2023-12-31" subject "Weekly Report"
-    - disconnect Account email "admin@domain.com"
+  - connect to Account email "admin@domain.com", create Message with sender "tom@domain.com"
+    content "Meeting summary" subject "Weekly Report"
+  - read one Message with from "2023-01-01" to "2023-12-31" sender "alice@domain.com"
+  - read all Message with from "2023-12-31T01:59:59Z" to "2023-12-31" subject "Weekly
+    Report"
+  - disconnect Account email "admin@domain.com"
   shell:
-    - Account.sh connect email "admin@domain.com"
-    - Message.sh create sender "tom@domain.com" content "Meeting summary" subject "Weekly Report"
-    - Message.sh read one from from "2023-01-01" to "2023-12-31" sender "alice@domain.com"
-    - Message.sh read all from "2023-12-31T01:59:59Z" to "2023-12-31" subject "Weekly Report"
-    - Account.sh disconnect email "admin@domain.com"
-
+  - Account.sh connect email "admin@domain.com"
+  - Message.sh read one from "2023-01-01" to "2023-12-31" sender "alice@domain.com"
+  - Message.sh read all from "2023-12-31T01:59:59Z" to "2023-12-31" subject "Weekly
+    Report"
+  - Account.sh disconnect email "admin@domain.com"

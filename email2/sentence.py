@@ -66,13 +66,35 @@ def generate_sentences(spec: Dict[str, Any], public_data: Dict[str, Any], num_se
         action = random.choice(list(object_spec['action'].keys()))
         
         sentence = generate_sentence(object_spec, action, object_name, public_data)
-        
+
+        dependent_object = ''
+        if 'object' in object_spec:
+            dependent_object = object_spec['object']
+
         if 'object' in object_spec['action'][action]:
             dependent_object = object_spec['action'][action]['object']
-            dependent_action = random.choice(list(spec[dependent_object]['action'].keys()))
-            dependent_sentence = generate_sentence(spec[dependent_object], dependent_action, dependent_object, public_data)
-            sentence += f", {dependent_sentence}"
-        
+
+        if len(dependent_object):
+
+            print(dependent_object)
+            # check if dependent_object is type dict
+            # just for selected action is available in dependent_object
+            if isinstance(dependent_object, dict):
+                for dependent_object_name, dependent_object_action in dependent_object.items():
+                    dependent_action = random.choice(list(spec[dependent_object_name]['action'].keys()))
+
+                    if dependent_object_action == dependent_action:
+                        dependent_action = random.choice(list(spec[dependent_object_name]['action'].keys()))
+                        dependent_sentence = generate_sentence(spec[dependent_object_name], dependent_action,
+                                                               dependent_object_name, public_data)
+                        sentence += f", {dependent_sentence}"
+            else:
+                # for all actions
+                dependent_action = random.choice(list(spec[dependent_object]['action'].keys()))
+                dependent_sentence = generate_sentence(spec[dependent_object], dependent_action, dependent_object,
+                                                       public_data)
+                sentence += f", {dependent_sentence}"
+
         sentences.append(sentence)
     
     return sentences
