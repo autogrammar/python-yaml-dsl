@@ -3,7 +3,7 @@ Message:
     - Account
   action:
     create:
-      sentence: "{action} {} with {public} and {object}"
+      sentence: "{action} {} with {public}"
       shell: "{}.sh {action} {public}"
       public:
         sender: string
@@ -43,7 +43,7 @@ Account:
     connect:
       object:
         - Message
-      sentence: "{action} to {} {public} and {object}"
+      sentence: "{action} to {} {public}"
       shell: "{}.sh {action} {public}"
       public:
         email: string
