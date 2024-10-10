@@ -1,11 +1,9 @@
 query:
   python:
     - Account.py connect --email "admin@domain.com"
-    - Message.py create --sender "bob@domain.com" --content "Meeting summary" --subject
-      "Team Notification"
+    - Message.py create --sender "bob@domain.com" --content "Meeting summary" --subject "Team Notification"
     - Account.py disconnect --email "admin@domain.com"
   sentences:
     - connect to Account email "admin@domain.com"
-    - create Message with sender "bob@domain.com" content "Meeting summary" subject
-      "Team Notification"
+    - create Message with sender "bob@domain.com" content "Meeting summary" subject "Team Notification"
     - disconnect Account email "admin@domain.com"

@@ -2,13 +2,17 @@ import yaml
 import sys
 from Account import Account
 from Message import Message
+import shlex
 
 def load_yaml(file_path):
     with open(file_path, 'r') as file:
         return yaml.safe_load(file)
 
 def parse_command(command):
-    parts = command.split()
+    # parts = command.split()
+    # Use shlex.split() to handle quoted substrings
+    parts = shlex.split(command)
+    # print(parts)
     module, action = parts[0], parts[1]
     args = {}
     for i in range(2, len(parts), 2):
@@ -30,6 +34,7 @@ def execute_command(module, action, args, private_data):
         message = Message()
         if action == 'create':
             required_args = {'sender', 'content', 'subject'}
+            # print(args)
             if not all(arg in args for arg in required_args):
                 missing_args = required_args - set(args.keys())
                 print(f"Error: Missing required arguments for Message.create(): {', '.join(missing_args)}")
@@ -46,7 +51,7 @@ def execute_command(module, action, args, private_data):
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: python run.py query.yaml")
+        print("Usage: python run.py query.yaml python")
         sys.exit(1)
 
     query_file = sys.argv[1]
@@ -55,6 +60,7 @@ def main():
 
     for command in query_data['query']['python']:
         module, action, args = parse_command(command)
+        print(f"\nRUN: {command}")
         execute_command(module, action, args, private_data)
 
 if __name__ == "__main__":
