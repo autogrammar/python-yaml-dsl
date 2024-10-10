@@ -11,7 +11,7 @@ Message:
         subject: string
     read:
       sentence: "{action} {modifier} {} with {public}"
-      shell: "{}.sh {modifier} {action} {public}"
+      shell: "{}.sh {action} {modifier} {public}"
       public:
         from: datetime
         to: datetime
@@ -24,7 +24,7 @@ Message:
         one: ''
     delete:
       sentence: "{} {modifier} {action} where {public}"
-      shell: "{}.sh {modifier} {action} {public}"
+      shell: "{}.sh {action} {modifier} {public}"
       public:
         from: datetime
         to: datetime

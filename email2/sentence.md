@@ -10,7 +10,6 @@ It handles nested objects, modifiers, and public/private data as described in th
 The script generates random sentences by choosing random objects, actions, and values from the provided data.
 It supports optional parameters in sentences (e.g., ({action} to)) by including them in the sentence pattern on the enb of sentence
 
-
 Ten skrypt implementuje następujące funkcjonalności:
 - Wczytywanie specyfikacji YAML z plików `object.yaml`, `private.yaml` i `public.yaml`.
 - Generowanie zdań na podstawie specyfikacji.
@@ -34,6 +33,7 @@ Generowane zdania są zapisywane do pliku `sentences.yaml` w formacie YAML.
 
 Parametr `{public}` w `sentence` oznacza, że musimy podać co najmniej jeden parametr z listy `public` zdefiniowanych w akcji, jest on obligatoryjny.
 
+
 Przykłady:
 
 ```yaml
@@ -43,6 +43,13 @@ sentences:
 ```
 
 Funkcje działają w oparciu o dane z plików i są generyczne, nie mają hardkodowanych zmiennych, dopasowują strukturę do reguł i danych z plików YAML.
+
+## Wskazówki
+
+Unikaj błędów typu: IndexError: Replacement index 0 out of range for positional args tuple, 
+Zamiast używać metody format(), używamy teraz metody replace() do zastąpienia poszczególnych elementów w sentence_pattern.
+
+
 
 ## Plik `object.yaml`
 
