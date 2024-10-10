@@ -32,7 +32,8 @@ sentences:
     - disconnect Account email "tom@domain.com"
 ```
 
- 
+w momencie wygenerowania każdego zdania Skrypt waliduje wygenerowane zdania ze wzorcem podanym w `sentence` pliku `sentence.yaml`, aby uniknąć błędnych przypadków.
+Funkcje działają w oparciu dane z plików i są generyczne nie mają hardkodowanych zmiennych, dopasowują strukturę do reguł i danych z plików yaml  
 
 ## Plik `object.yaml`
 
@@ -40,8 +41,7 @@ This is a Domain-Specific Language (DSL) builder that uses YAML specifications t
 
 ```yaml
 Message:
-  object:
-    - Account
+  object: Account
   action:
     create:
       sentence: "{action} {} with {public}"
@@ -60,9 +60,9 @@ Message:
         content: string
         subject: string
       modifier:
-        - last: integer
-        - all
-        - one
+        last: integer
+        all: ''
+        one: ''
     delete:
       sentence: "{}.sh {modifier} {action} {public}"
       shell: "{}.sh {modifier} {action} {public}"
@@ -73,17 +73,16 @@ Message:
         content: string
         subject: string
       modifier:
-        - last: integer
-        - all
-        - one
+        last: integer
+        all: ''
+        one: ''
 
 
 Account:
   default: connect
   action:
     connect:
-      object:
-        - Message
+      object: Message
       sentence: "{action} to {} {public}"
       shell: "{}.sh {action} {public}"
       public:
@@ -157,8 +156,7 @@ konfiguracja `object` `Action`
 ```yaml
   action:
     connect:
-      object:
-        - Message
+      object: Message
       sentence: "{action} to {} {public}"
       shell: "{}.sh {action} {public}"
       public:
@@ -179,11 +177,25 @@ Przykład poprawny z obiektem Message
 sentences:
 - connect to Account email "bob@domain.com", create Message with sender "default_string" subject "default_string" content "default_string"
 ```
+Istotne jest Uwzględnienie obowiązkowego obiektu Message dla akcji connect w Account.
+Obsługa domyślnej akcji (default) dla obiektów, które ją mają zdefiniowaną.
+Generowanie zdań zaczynając od losowo wybranego obiektu głównego, co powinno zapewnić większą różnorodność generowanych zdań.
+
 
 ## Błąd Action typu one
-konfiguracja action i modyfikatorów one i many:
+konfiguracja action i modyfikatorów one i many w object `Message`
 
 ```yaml
+Message:
+  object: Account
+  action:
+    create:
+      sentence: "{action} {} with {public}"
+      shell: "{}.sh {action} {public}"
+      public:
+        sender: string
+        content: string
+        subject: string
     read:
       sentence: "{action:read} {many} {} with {public}"
       shell: "{}.sh {many} {action} {public}"
@@ -194,9 +206,9 @@ konfiguracja action i modyfikatorów one i many:
         content: string
         subject: string
       modifier:
-        - last: integer
-        - all
-        - one
+        last: integer
+        all: ''
+        one: ''
 ```
 Akcja `create` nie może być użyta z modyfikatorem many: `last` lub `all` bo go nie ma w sekcji action co oznacza, że poniższe zdanie jest błędne: 
 ```yaml
@@ -234,12 +246,11 @@ Przykłady niepoprawne, ponieważ struktura definiowana przez poniższą konfigu
 ```
 action w object `Account` disconnect konczy zdanie, poniewaz nie zawiera `object` `Message` co znaczy, że connect umożliwia dodawania kolejnych obiektów w zdaniu 
 
-konfiguracja `object` `Action`
+konfiguracja `object` `Action` dla object `Account`
 ```yaml
   action:
     connect:
-      object:
-        - Message
+      object: Message
       sentence: "{action} to {} {public}"
       shell: "{}.sh {action} {public}"
       public:
