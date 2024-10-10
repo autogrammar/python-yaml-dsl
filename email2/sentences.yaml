@@ -1,0 +1,5 @@
+sentences:
+  - connect to Account email "admin@domain.com", create Message with sender "tom@domain.com" content "Meeting summary" subject "Weekly Report"
+  - read one Message with from "2023-01-01" to "2023-12-31" sender "alice@domain.com"
+  - read all Message with from "2023-12-31T01:59:59Z" to "2023-12-31" subject "Weekly Report"
+  - disconnect Account email "admin@domain.com"
