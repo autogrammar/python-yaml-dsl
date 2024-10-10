@@ -2,26 +2,32 @@ import yaml
 
 class Account:
     def __init__(self):
-        self.private_data = self.load_private_data()
-
-    def load_private_data(self):
-        with open('private.yaml', 'r') as file:
-            return yaml.safe_load(file)['Account']['email']
+        self.connected = False
+        self.email = None
 
     def connect(self, email):
-        if email in self.private_data:
-            account_data = self.private_data[email]
-            print(f"Connecting to account: {email}")
-            print(f"Server: {account_data['server']}")
-            print(f"Username: {account_data['username']}")
-            print(f"Port: {account_data['port']}")
-            # Tutaj można dodać rzeczywistą logikę połączenia
-        else:
-            print(f"No data found for email: {email}")
+        try:
+            with open('private.yaml', 'r') as file:
+                private_data = yaml.safe_load(file)
+            
+            if email in private_data:
+                self.email = email
+                self.connected = True
+                print(f"Connected to account: {email}")
+                return True
+            else:
+                print(f"No data found for email: {email}")
+                return False
+        except FileNotFoundError:
+            print("Error: private.yaml file not found")
+            return False
 
-    def disconnect(self, email):
-        if email in self.private_data:
-            print(f"Disconnecting from account: {email}")
-            # Tutaj można dodać rzeczywistą logikę rozłączenia
+    def disconnect(self):
+        if self.connected:
+            self.connected = False
+            print(f"Disconnected from account: {self.email}")
+            self.email = None
+            return True
         else:
-            print(f"No data found for email: {email}")
+            print("No active connection to disconnect")
+            return False

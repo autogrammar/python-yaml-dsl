@@ -1,6 +1,6 @@
 commands:
-  - Account Account connect email=user@example.com
-  - Account Account disconnect
-  - Message Message create sender=user@example.com content="Hello, world!" subject="Test"
-  - Message Message read id=1
-  - Message Message delete id=1
+  - Account connect email=user@example.com
+  - Account disconnect
+  - Message create sender=user@example.com content="Hello, world!" subject="Test"
+  - Message read id=1
+  - Message delete id=1
