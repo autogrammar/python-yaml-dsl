@@ -4,6 +4,10 @@ Message:
     - "{action:read} {many} {} with {public}"
     - "{action:delete} {many} {} with {public}"
 #    - "{action:read,delete} {many} {} with {public}"
+  shell:
+    - "{}.sh {action} {public}"
+    - "{}.sh {many} {action:read} {public}"
+    - "{}.sh {many} {action:delete} {public}"
   public:
     date: datetime
     sender: string
@@ -28,6 +32,10 @@ Account:
 #    - "{} {public}"
     - "{action:disconnect} {} {public}"
     - "{action:connect} to {} {public} and {object}"
+  shell:
+    - "{}.sh {action} {public}"
+    - "{}.sh {many} {action:read} {public}"
+    - "{}.sh {many} {action:delete} {public}"
   public:
     email: string
   private:

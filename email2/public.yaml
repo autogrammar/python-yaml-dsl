@@ -1,0 +1,20 @@
+Message:
+  sender:
+    - "alice@domain.com"
+    - "bob@domain.com"
+    - "tom@domain.com"
+    - "admin@domain.com"
+  content:
+    - "Hello, World!"
+    - "Important update"
+    - "default_string"
+  subject:
+    - "Meeting"
+    - "Project Update"
+    - "Important Announcement"
+
+Account:
+  email:
+    - "tom@domain.com"
+    - "jane@domain.com"
+    - "admin@domain.com"

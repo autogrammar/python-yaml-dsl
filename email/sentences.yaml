@@ -1,0 +1,6 @@
+examples:
+- delete last 95 Message with date sender "admin@domain.com" subject "Important Announcement"
+- connect to Account email "admin@domain.com" and create Message with sender "bob@domain.com" content  "default_string" subject "Important Announcement" and disconnect Account email "tom@domain.com"
+- disconnect Account email "admin@domain.com"
+- create Message with sender "bob@domain.com" content "Important update" subject "Project Update"
+- connect to Account email "tom@domain.com" and read all Message with sender "admin@domain.com" subject "Important Announcement"

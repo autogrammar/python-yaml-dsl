@@ -19,6 +19,11 @@ python -m unittest test_dsl.py
 ```
 
 ## TODO
+- examples do testowania
+- testowe konto imap
+- skrypt do parsowania i przyporządkowania wygenerowanych zdań
+- wykorzystanie private do połączeń serwera z yaml/.env
+- podłaczenie skryptu
 - unit test
 - priv repo 
 - 
