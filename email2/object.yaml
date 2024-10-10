@@ -5,6 +5,8 @@ Message:
     create:
       sentence: "{action} {} with {public}"
       shell: "{}.sh {action} {public}"
+      python: "{}.py {action} {public}"
+      sql: "{}.sql {action} {public}"
       public:
         sender: string
         content: string
@@ -12,6 +14,8 @@ Message:
     read:
       sentence: "{action} {modifier} {} with {public}"
       shell: "{}.sh {action} {modifier} {public}"
+      python: "{}.py {action} {modifier} {public}"
+      sql: "{}.sql {action} {modifier} {public}"
       public:
         from: datetime
         to: datetime
@@ -25,6 +29,9 @@ Message:
     delete:
       sentence: "{} {modifier} {action} where {public}"
       shell: "{}.sh {action} {modifier} {public}"
+      python: "{}.py {action} {modifier} {public}"
+      sql: "{}.sql {action} {modifier} {public}"
+      api: "{}.curl {action} {modifier} {public}"
       public:
         from: datetime
         to: datetime
@@ -43,6 +50,8 @@ Account:
       object: Message
       sentence: "({action} to) {} {public}"
       shell: "{}.sh {action} {public}"
+      python: "{}.py {action} {public}"
+      sql: "{}.sql {action} {public}"
       public:
         email: string
       private:
@@ -54,6 +63,8 @@ Account:
     disconnect:
       sentence: "{action} {} {public}"
       shell: "{}.sh {action} {public}"
+      python: "{}.py {action} {public}"
+      sql: "{}.sql {action} {public}"
       public:
         email: string
       private:

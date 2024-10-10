@@ -48,12 +48,17 @@ Ta dokumentacja powinna pomóc w zrozumieniu celu i struktury projektu generator
 Run the script from the command line, specifying the YAML files 
 
 ```bash
-python query.py sentences.yaml object.yaml query.yaml
+python query.py sentences.yaml object.yaml query.yaml shell
 ```
 
 ```bash
-python query.py sentences.yaml object.yaml query.yaml '--'
+python query.py sentences.yaml object.yaml query.yaml shell '--'
 ```
+
+```bash
+python query.py sentences.yaml object.yaml query.yaml python '--'
+```
+
 
 1. `sentences.yaml` - zawiera wcześniej wygenereowane zdania, które bedą zmieniane na query w shell.yaml
 2. `object.yaml` - zawiera specyfikację obiektów, akcji i wzorców dla poleceń shell
@@ -82,6 +87,19 @@ query:
     - Account.sh disconnect email "admin@domain.com"
 
 ```
+another example
+```yaml
+query:
+  sentences:
+    - connect to Account email "admin@domain.com"
+    - create Message with sender "bob@domain.com" content "Meeting summary" subject
+      "Team Notification"
+    - disconnect Account email "admin@domain.com"
+  shell:
+    - Account.sh connect --email "admin@domain.com"
+    - Message.sh create --sender "bob@domain.com" --content "Meeting summary" --subject "Team Notification"
+    - Account.sh disconnect --email "admin@domain.com"
+```
 
 
 ## Struktura pliku `sentences.yaml`
@@ -105,6 +123,8 @@ Message:
     create:
       sentence: "{action} {} with {public}"
       shell: "{}.sh {action} {public}"
+      python: "{}.py {action} {public}"
+      sql: "{}.sql {action} {public}"
       public:
         sender: string
         content: string
@@ -112,6 +132,8 @@ Message:
     read:
       sentence: "{action} {modifier} {} with {public}"
       shell: "{}.sh {action} {modifier} {public}"
+      python: "{}.py {action} {modifier} {public}"
+      sql: "{}.sql {action} {modifier} {public}"
       public:
         from: datetime
         to: datetime
@@ -124,7 +146,10 @@ Message:
         one: ''
     delete:
       sentence: "{} {modifier} {action} where {public}"
-      shell: "{}.sh {modifier} {action} {public}"
+      shell: "{}.sh {action} {modifier} {public}"
+      python: "{}.py {action} {modifier} {public}"
+      sql: "{}.sql {action} {modifier} {public}"
+      api: "{}.curl {action} {modifier} {public}"
       public:
         from: datetime
         to: datetime
@@ -143,6 +168,8 @@ Account:
       object: Message
       sentence: "({action} to) {} {public}"
       shell: "{}.sh {action} {public}"
+      python: "{}.py {action} {public}"
+      sql: "{}.sql {action} {public}"
       public:
         email: string
       private:
@@ -154,6 +181,8 @@ Account:
     disconnect:
       sentence: "{action} {} {public}"
       shell: "{}.sh {action} {public}"
+      python: "{}.py {action} {public}"
+      sql: "{}.sql {action} {public}"
       public:
         email: string
       private:
@@ -161,6 +190,7 @@ Account:
         password: string
         username: string
         port: number
+
 
 ```
 
