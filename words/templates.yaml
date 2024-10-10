@@ -1,0 +1,4 @@
+templates:
+  - "{subject} {verb} {object}."
+  - "The {adjective} {subject} {verb} {adverb}."
+  - "{subject} {verb} {object} with {instrument}."

@@ -1,0 +1,1 @@
+python sentence.py templates.yaml data.yaml -n 10 -o sentences.yaml

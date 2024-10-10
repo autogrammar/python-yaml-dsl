@@ -1,0 +1,24 @@
+subject:
+  - cat
+  - dog
+  - bird
+verb:
+  - runs
+  - jumps
+  - sings
+object:
+  - ball
+  - tree
+  - house
+adjective:
+  - happy
+  - big
+  - small
+adverb:
+  - quickly
+  - loudly
+  - silently
+instrument:
+  - paw
+  - beak
+  - tail
