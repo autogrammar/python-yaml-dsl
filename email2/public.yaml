@@ -1,20 +1,46 @@
-Message:
-  sender:
-    - "alice@domain.com"
-    - "bob@domain.com"
-    - "tom@domain.com"
-    - "admin@domain.com"
-  content:
-    - "Hello, World!"
-    - "Important update"
-    - "default_string"
-  subject:
-    - "Meeting"
-    - "Project Update"
-    - "Important Announcement"
-
 Account:
   email:
-    - "tom@domain.com"
-    - "jane@domain.com"
-    - "admin@domain.com"
+    "tom@domain.com":
+      Message:
+        sender:
+          - "alice@domain.com"
+          - "tom@domain.com"
+          - "admin@domain.com"
+        content:
+          - "Hello, World!"
+          - "Important update"
+          - "default_string"
+        subject:
+          - "Meeting"
+          - "Project Update"
+          - "Important Announcement"
+    "jane@domain.com":
+      Message:
+        sender:
+          - "alice@domain.com"
+          - "tom@domain.com"
+          - "admin@domain.com"
+        content:
+          - "Hello, World!"
+          - "Important update"
+          - "default_string"
+        subject:
+          - "Meeting"
+          - "Project Update"
+          - "Important Announcement"
+
+    "admin@domain.com":
+      Message:
+        sender:
+          - "alice@domain.com"
+          - "bob@domain.com"
+          - "tom@domain.com"
+          - "admin@domain.com"
+        content:
+          - "Hello, World!"
+          - "Important update"
+          - "default_string"
+        subject:
+          - "Meeting"
+          - "Project Update"
+          - "Important Announcement"

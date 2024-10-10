@@ -1,14 +1,27 @@
-## Projekt do wykonania
+## Cel Projektu
 
-Create DSL builder based on yaml specifications Save YAML specification in a `object.yaml` file
-The main purpose of this project is to help users define their YAML specifications in a file and  then generate a specified number of sentences based on those specifications as separated file: `sentences.yaml`
+DSL builder based on yaml specifications Save YAML specification in a `object.yaml` file
+Ten skrypt implementuje następujące funkcjonalności:
 
-## Sposób uruchomienia
-Run the script from the command line, specifying the YAML file and optionally the number of sentences: 
+Wczytywanie specyfikacji YAML z plików `object.yaml`, `private.yaml` i `public.yaml`.
+Generowanie zdań na podstawie specyfikacji.
+Zapisywanie wygenerowanych zdań do pliku wyjściowego sentences.yaml.
+Skrypt można uruchomić z wiersza poleceń w następujący sposób:
 
 ```bash
 python sentence.py object.yaml private.yaml public.yaml -n 5 -o sentences.yaml
 ```
+
+Gdzie:
+`object.yaml` to plik ze specyfikacją obiektów i akcji
+`private.yaml to plik z prywatnymi danymi
+`public.yaml to plik z publicznymi danymi
+-n 5 określa liczbę zdań do wygenerowania (domyślnie 5)
+-o `sentences.yaml` określa plik wyjściowy (domyślnie sentences.yaml)
+
+Skrypt generuje zdania zgodnie z podaną specyfikacją, używając danych z plików public.yaml i private.yaml. 
+Generowane zdania są zapisywane do pliku `sentences.yaml` w formacie YAML 
+ 
 
 ## Plik `object.yaml`
 
@@ -83,14 +96,30 @@ Account:
 
 ```
 
-`{}` - oznacza aktualny `object` czyli ioznacza to pattern:
-- "{action:disconnect} {} {public}"
+`{}` - oznacza aktualny `object` czyli oznacza to pattern:
+- "{action} {} {public}"
 przykład:
-- disconnect Account email "tom@domain.com"
+```yaml
+sentences:
+  - disconnect Account email "tom@domain.com"
+```
+
+parametr `sentence` określa pattern w zdaniach, 
+parametr `object` określa hierarchię w budowaniu zdań, podmiot i przedmiot.
+Jeśli występuje to konieczne jest użycie drugiego członu zdania po przecinku, w przypadku przykładu `Account` trzeba użyć jeszcze obiect: `Message`
+ponieważ konfiguracja dla action `connect` wymusza uzycie object `Message` ale dla `disconnect` już nie, przykłady:
+
+```yaml
+sentences:
+    - connect to Account email "admin@domain.com", create Message with sender "bob@domain.com" content "default_string" subject "Important Announcement""
+    - disconnect Account email "tom@domain.com"
+```
+
+## Parametr default: connect
+
+Przykład konfiguracji `default: connect` oznacza, że gdy nie jest określona akcja w zdaniu, to domyślnie jest zdefiniowana w `default` czyli w tym przykładzie action `connect`
 
 
-parametr `object` określa w `sentence` zagnieżdzenie innego obiektu 
-W ten sposób można stworzyć hierarchię budowania zdania, podmiot i przedmiot.
 
 ## Przykłady poprawne
 ```yaml
@@ -106,7 +135,8 @@ sentences:
 ```
 
 
-## Błedne zastosowanie `sentence` pattern:
+
+## Błędne zastosowanie `sentence` pattern:
 
 konfiguracja `object` `Action`
 ```yaml
@@ -166,7 +196,15 @@ Poprawne zdanie powinno wyglądać tak:
 
 ## Action disconnect
 
-Przykłady niepoprawne, ponieważ struktura definiowana przez poniższą konfigurację Account, gdzie action disconnect konczy zdanie i nie umożliwia dodawanie kolejnych obiektów w zdaniu
+
+```yaml
+sentences:
+- disconnect Account email "admin@domain.com", delete all Message with sender "default_sender" subject "default_subject"
+- read all Message last 6
+```
+
+
+Przykłady niepoprawne, ponieważ struktura definiowana przez poniższą konfigurację
 ```yaml
     disconnect:
       sentence: "{action} {} {public}"
@@ -179,51 +217,87 @@ Przykłady niepoprawne, ponieważ struktura definiowana przez poniższą konfigu
         username: string
         port: number
 ```
+action w object `Account` disconnect konczy zdanie, poniewaz nie zawiera `object` `Message` co znaczy, że connect umożliwia dodawania kolejnych obiektów w zdaniu 
 
-Przykład konfiguracji `default: connect` oznacza, że gdy nie jest określona akcja w zdaniu, to domyślnie jest zdefiniowana w `default` czyli w tym przykładzie action `connect`
-
+konfiguracja `object` `Action`
 ```yaml
-sentences:
-- disconnect Account email "admin@domain.com", delete all Message with sender "default_sender" subject "default_subject"
-- read all Message last 6
+  action:
+    connect:
+      object:
+        - Message
+      sentence: "{action} to {} {public}"
+      shell: "{}.sh {action} {public}"
+      public:
+        email: string
+      private:
+        server: string
+        password: string
+        username: string
+        port: number
 ```
 
+## Generowanie przykładów
 
-Funkcja generująca przykłady powinna generować `sentence` pattern generycznie i nie używać konkretnych nazw z pliku `object.yaml` a bazować na hierarchii powiązań, aby uzyskać widoczny efekt
-Liczba mnoga słowa powinna być rozpoznawana i zamieniana na pojedynczą, stwórz reguły odmiany liczby mnogje dla jezyka angielskiego. 
-
+Funkcja generująca przykłady powinna generować `sentence` pattern generycznie i nie używać konkretnych nazw z pliku `object.yaml`, a bazować na hierarchii powiązań, aby uzyskać widoczny efekt.
+Liczba mnoga słów powinna być rozpoznawana i zamieniana na pojedynczą. Należy stworzyć reguły odmiany liczby mnogiej dla języka angielskiego.
 
 ## Plik `public.yaml`
 
-W pliku `public.yaml` są przechowywane wartości, które są używane w sentences oraz dane generowane w trakcie polaczenia z uslugami, pobierane do cache
+W pliku `public.yaml` są przechowywane wartości, które są używane w sentences oraz dane generowane w trakcie połączenia z usługami, pobierane do cache.
 ```yaml
-Message:
-  sender:
-    - "alice@domain.com"
-    - "bob@domain.com"
-    - "tom@domain.com"
-    - "admin@domain.com"
-  content:
-    - "Hello, World!"
-    - "Important update"
-    - "default_string"
-  subject:
-    - "Meeting"
-    - "Project Update"
-    - "Important Announcement"
-
 Account:
   email:
-    - "tom@domain.com"
-    - "jane@domain.com"
-    - "admin@domain.com"
+    "tom@domain.com":
+      Message:
+        sender:
+          - "alice@domain.com"
+          - "tom@domain.com"
+          - "admin@domain.com"
+        content:
+          - "Hello, World!"
+          - "Important update"
+          - "default_string"
+        subject:
+          - "Meeting"
+          - "Project Update"
+          - "Important Announcement"
+    "jane@domain.com":
+      Message:
+        sender:
+          - "alice@domain.com"
+          - "tom@domain.com"
+          - "admin@domain.com"
+        content:
+          - "Hello, World!"
+          - "Important update"
+          - "default_string"
+        subject:
+          - "Meeting"
+          - "Project Update"
+          - "Important Announcement"
+
+    "admin@domain.com":
+      Message:
+        sender:
+          - "alice@domain.com"
+          - "bob@domain.com"
+          - "tom@domain.com"
+          - "admin@domain.com"
+        content:
+          - "Hello, World!"
+          - "Important update"
+          - "default_string"
+        subject:
+          - "Meeting"
+          - "Project Update"
+          - "Important Announcement"
 
 ```
 
 
 ## Plik `private.yaml`
 
-Prywatne dane potrzebne do uruchomienia uslug przez skrypt w python w pliku `private.yaml`
+Prywatne dane potrzebne do uruchomienia usług przez skrypt w Pythonie są przechowywane w pliku `private.yaml`.
 ```bash
 Account:
   email:
