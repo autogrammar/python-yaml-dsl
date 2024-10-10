@@ -1,5 +1,6 @@
 Message:
-  object: Account
+  object:
+    Account: connect
   action:
     create:
       sentence: "{action} {} with {public}"
@@ -9,8 +10,8 @@ Message:
         content: string
         subject: string
     read:
-      sentence: "{action} {many} {} with {public}"
-      shell: "{}.sh {many} {action} {public}"
+      sentence: "{action} {modifier} {} with {public}"
+      shell: "{}.sh {modifier} {action} {public}"
       public:
         from: datetime
         to: datetime
@@ -37,11 +38,10 @@ Message:
 
 
 Account:
-  default: connect
   action:
     connect:
       object: Message
-      sentence: "{action} to {} {public}"
+      sentence: "({action} to) {} {public}"
       shell: "{}.sh {action} {public}"
       public:
         email: string

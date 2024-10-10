@@ -1,12 +1,14 @@
 ## Cel Projektu
 
-DSL builder based on yaml specifications Save YAML specification in a `object.yaml` file
-Ta prosta implementacja obsługuje podstawowe reguły tworzenia liczby mnogiej w języku angielskim. Możesz ją rozszerzyć o bardziej zaawansowane reguły, jeśli to konieczne.
+DSL builder oparty na specyfikacjach YAML. Specyfikacja YAML jest zapisywana w pliku `object.yaml`.
+
+Ta implementacja obsługuje podstawowe reguły tworzenia zdań w oparciu o specyfikację YAML. Można ją rozszerzyć o bardziej zaawansowane reguły, jeśli to konieczne.
 
 Ten skrypt implementuje następujące funkcjonalności:
-Wczytywanie specyfikacji YAML z plików `object.yaml`, `private.yaml` i `public.yaml`.
-Generowanie zdań na podstawie specyfikacji.
-Zapisywanie wygenerowanych zdań do pliku wyjściowego `sentences.yaml`
+- Wczytywanie specyfikacji YAML z plików `object.yaml`, `private.yaml` i `public.yaml`.
+- Generowanie zdań na podstawie specyfikacji.
+- Zapisywanie wygenerowanych zdań do pliku wyjściowego `sentences.yaml`
+
 Skrypt można uruchomić z wiersza poleceń w następujący sposób:
 
 ```bash
@@ -14,34 +16,35 @@ python sentence.py object.yaml private.yaml public.yaml -n 5 -o sentences.yaml
 ```
 
 Gdzie:
-`object.yaml` to plik ze specyfikacją obiektów i akcji
-`private.yaml to plik z prywatnymi danymi
-`public.yaml to plik z publicznymi danymi
--n 5 określa liczbę zdań do wygenerowania (domyślnie 5)
--o `sentences.yaml` określa plik wyjściowy (domyślnie sentences.yaml)
+- `object.yaml` to plik ze specyfikacją obiektów i akcji
+- `private.yaml` to plik z prywatnymi danymi
+- `public.yaml` to plik z publicznymi danymi
+- `-n 5` określa liczbę zdań do wygenerowania (domyślnie 5)
+- `-o sentences.yaml` określa plik wyjściowy (domyślnie sentences.yaml)
 
 Skrypt generuje zdania zgodnie z podaną specyfikacją, używając danych z plików public.yaml i private.yaml. 
-Generowane zdania są zapisywane do pliku `sentences.yaml` w formacie YAML 
+Generowane zdania są zapisywane do pliku `sentences.yaml` w formacie YAML.
 
-parametr `{public}` w `senntence`  oznacza, ze musimy podać co najmniej jeden parametr z listy `public` zdefiniowanych w akcji, jest on obligatoryjny
+Parametr `{public}` w `sentence` oznacza, że musimy podać co najmniej jeden parametr z listy `public` zdefiniowanych w akcji, jest on obligatoryjny.
+
 Przykłady:
 
 ```yaml
 sentences:
-    - connect to Account email "admin@domain.com", create Message with sender "bob@domain.com" content "default_string" subject "Important Announcement""
+    - connect to Account email "admin@domain.com", create Message with sender "bob@domain.com" content "default_string" subject "Important Announcement"
     - disconnect Account email "tom@domain.com"
 ```
 
-w momencie wygenerowania każdego zdania Skrypt waliduje wygenerowane zdania ze wzorcem podanym w `sentence` pliku `sentence.yaml`, aby uniknąć błędnych przypadków.
-Funkcje działają w oparciu dane z plików i są generyczne nie mają hardkodowanych zmiennych, dopasowują strukturę do reguł i danych z plików yaml  
+Funkcje działają w oparciu o dane z plików i są generyczne, nie mają hardkodowanych zmiennych, dopasowują strukturę do reguł i danych z plików YAML.
 
 ## Plik `object.yaml`
 
-This is a Domain-Specific Language (DSL) builder that uses YAML specifications to generate sentences.
+To jest Domain-Specific Language (DSL) builder, który używa specyfikacji YAML do generowania zdań.
 
 ```yaml
 Message:
-  object: Account
+  object:
+    Account: connect
   action:
     create:
       sentence: "{action} {} with {public}"
@@ -51,8 +54,8 @@ Message:
         content: string
         subject: string
     read:
-      sentence: "{action} {many} {} with {public}"
-      shell: "{}.sh {many} {action} {public}"
+      sentence: "{action} {modifier} {} with {public}"
+      shell: "{}.sh {modifier} {action} {public}"
       public:
         from: datetime
         to: datetime
@@ -79,11 +82,10 @@ Message:
 
 
 Account:
-  default: connect
   action:
     connect:
       object: Message
-      sentence: "{action} to {} {public}"
+      sentence: "({action} to) {} {public}"
       shell: "{}.sh {action} {public}"
       public:
         email: string
@@ -108,9 +110,8 @@ Account:
 
 Generowanie zdań uwzględnia modyfikatory i obiekty zagnieżdżone.
 Używane są wartości z pliku public.yaml, a w przypadku ich braku, generowane są wartości domyślne.
-Aby uwzględnić regułę odmiany liczby mnogiej dla języka angielskiego, możemy dodać prostą funkcję pomocniczą:
 
-`{}` - oznacza aktualny `object` czyli oznacza to pattern:
+`{}` oznacza aktualny `object`, czyli oznacza to pattern:
 - "{action} {} {public}"
 przykład:
 ```yaml
@@ -118,62 +119,55 @@ sentences:
   - disconnect Account email "tom@domain.com"
 ```
 
-parametr `sentence` określa pattern w zdaniach, 
+Parametr `sentence` określa pattern w zdaniach, 
 parametr `object` określa hierarchię w budowaniu zdań, podmiot i przedmiot.
-Jeśli występuje to konieczne jest użycie drugiego członu zdania po przecinku, w przypadku przykładu `Account` trzeba użyć jeszcze obiect: `Message`
-ponieważ konfiguracja dla action `connect` wymusza uzycie object `Message` ale dla `disconnect` już nie, przykłady:
+Jeśli występuje, to konieczne jest użycie drugiego członu zdania po przecinku. W przypadku przykładu `Message` trzeba użyć jeszcze object `Account` z akcją `connect`, 
+ponieważ konfiguracja dla action `connect` wymusza użycie object `Message`, ale dla `disconnect` już nie. Przykłady:
 
 ```yaml
 sentences:
-    - connect to Account email "admin@domain.com", create Message with sender "bob@domain.com" content "default_string" subject "Important Announcement""
+    - connect to Account email "admin@domain.com", create Message with sender "bob@domain.com" content "default_string" subject "Important Announcement"
     - disconnect Account email "tom@domain.com"
 ```
 
-W obiekcie lub akcji może znajdować się deklaracja object: Account, co oznacza, że zdanie musi zawierać również zdanie wygenerowane na podstawie obiektu zaleznego, jak 
+W obiekcie lub akcji może znajdować się deklaracja `object: Account`, co oznacza, że zdanie musi zawierać również zdanie wygenerowane na podstawie obiektu zależnego, jak w przykładzie Messages:
 
-```yaml
-Message:
-  object: Account
-```
-w przykładzie Messages,  musi też zawierać zdanie z Account
 ```yaml
 sentences:
     - read Message with subject "Meeting", Account email "tom@domain.com" 
     - delete last 6 Message, Account email "tom@domain.com"
-    - connect to Account email "tom@domain.com", delete last 95 Message with date sender "admin@domain.com" subject "Important Announcement"
+    - connect to Account email "tom@domain.com", delete last 95 Message with sender "admin@domain.com" subject "Important Announcement"
     - disconnect Account email "tom@domain.com"
 ```
 
+## Sentence i opcjonalne parametry
 
-## Parametr default: connect
-
-Przykład konfiguracji `default: connect` oznacza, że gdy nie jest określona akcja w zdaniu, to domyślnie jest zdefiniowana w `default` jako opcjonalnie występująca w zdaniu. czyli w tym przykładzie action `connect`
+W object `Account` znajduje się
+`sentence: "({action} to) {} {public}"`
+Przykład tej konfiguracji oznacza, że zawartość `({action} to)` jest opcjonalnie występująca w zdaniu, czyli jak w tym przykładzie action `connect`:
 ```yaml
 sentences:
-    - read Message with subject "Meeting", Account email "tom@domain.com" 
-    - delete last 6 Message, Account email "tom@domain.com"
+    - connect to Account email "tom@domain.com", create Message with sender "bob@domain.com" content "default_string" subject "Important Announcement"
     - disconnect Account email "tom@domain.com"
 ```
-zdanie `disconnect Account email "tom@domain.com"` zawiera disconnect, ponieważ nie jest on opcjonalny
+Zdanie `disconnect Account email "tom@domain.com"` nie ma nawiasów `()`, co oznacza, że nie ma tam opcjonalnej zawartości i zawiera `disconnect`.
 
 ## Inne poprawne przykłady 
 ```yaml
 sentences:
-    
     - create Message with sender "bob@domain.com" content "Important update" subject "Project Update"
     - connect to Account email "tom@domain.com", read all Message with sender "admin@domain.com" subject "Important Announcement"
 ```
-
-
 
 ## Błędne zastosowanie `sentence` pattern:
 
 konfiguracja `object` `Action`
 ```yaml
+Account:
   action:
     connect:
       object: Message
-      sentence: "{action} to {} {public}"
+      sentence: "({action} to) {} {public}"
       shell: "{}.sh {action} {public}"
       public:
         email: string
@@ -182,6 +176,7 @@ konfiguracja `object` `Action`
         password: string
         username: string
         port: number
+
 ```
 Przykłady poniżej jest niepoprawne, ponieważ jest zastosowany drugi `sentence` pattern, gdzie kolejnym elementem zdania po przecinku musi być {object} Message wraz z całą regułą `sentence` z Message w zależności od `action`
 ```yaml
@@ -199,11 +194,12 @@ Generowanie zdań zaczynając od losowo wybranego obiektu głównego, co powinno
 
 
 ## Błąd Action typu one
-konfiguracja action i modyfikatorów one i many w object `Message`
+konfiguracja action i modyfikatorów one, all, last z podaniem wartosci typu integer w object `Message`
 
 ```yaml
 Message:
-  object: Account
+  object: 
+    Account: connect
   action:
     create:
       sentence: "{action} {} with {public}"
@@ -213,8 +209,8 @@ Message:
         content: string
         subject: string
     read:
-      sentence: "{action} {many} {} with {public}"
-      shell: "{}.sh {many} {action} {public}"
+      sentence: "{action} {modifier} {} with {public}"
+      shell: "{}.sh {modifier} {action} {public}"
       public:
         from: datetime
         to: datetime
@@ -226,7 +222,7 @@ Message:
         all: ''
         one: ''
 ```
-Akcja `create` nie może być użyta z modyfikatorem many: `last` lub `all` bo go nie ma w sekcji action co oznacza, że poniższe zdanie jest błędne: 
+Akcja `create` nie może być użyta z modyfikatorem: `last` lub `all` bo go nie ma w sekcji action co oznacza, że poniższe zdanie jest błędne: 
 ```yaml
 - connect to Account email "admin@domain.com", create last 8 Message with content "default_string"
 ```
@@ -249,6 +245,7 @@ sentences:
 
 Przykłady niepoprawne, ponieważ struktura definiowana przez poniższą konfigurację
 ```yaml
+Account:
     disconnect:
       sentence: "{action} {} {public}"
       shell: "{}.sh {action} {public}"
@@ -263,20 +260,7 @@ Przykłady niepoprawne, ponieważ struktura definiowana przez poniższą konfigu
 action w object `Account` disconnect konczy zdanie, poniewaz nie zawiera `object` `Message` co znaczy, że connect umożliwia dodawania kolejnych obiektów w zdaniu 
 
 konfiguracja `object` `Action` dla object `Account`
-```yaml
-  action:
-    connect:
-      object: Message
-      sentence: "{action} to {} {public}"
-      shell: "{}.sh {action} {public}"
-      public:
-        email: string
-      private:
-        server: string
-        password: string
-        username: string
-        port: number
-```
+
 
 ## Generowanie przykładów
 
