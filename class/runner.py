@@ -8,6 +8,10 @@ def load_yaml(file_path):
     with open(file_path, 'r') as file:
         return yaml.safe_load(file)
 
+import importlib
+import inspect
+
+
 def list_classes_and_objects():
     modules = ['Account', 'Message']
     classes_and_objects = {}
@@ -22,8 +26,10 @@ def list_classes_and_objects():
         for name, obj in inspect.getmembers(module):
             if inspect.isclass(obj) and name == module_name:
                 classes_and_objects[module_name]['class'] = obj
-            elif inspect.isfunction(obj):
-                classes_and_objects[module_name]['methods'][name] = obj
+                # Dodajemy metody klasy
+                for method_name, method_obj in inspect.getmembers(obj):
+                    if inspect.isfunction(method_obj) or inspect.ismethod(method_obj):
+                        classes_and_objects[module_name]['methods'][method_name] = method_obj
 
     return classes_and_objects
 
@@ -78,9 +84,11 @@ def main():
     print("Available modules and methods:")
     for module_name, module_info in classes_and_objects.items():
         print(f"\nModule: {module_name}")
+        print("  Class:", module_info['class'].__name__ if module_info['class'] else "Not found")
         print("  Methods:")
-        for method_name in module_info['methods']:
+        for method_name, method_obj in module_info['methods'].items():
             print(f"    - {method_name}")
+            print(f"      {inspect.signature(method_obj)}")
 
     print("\nExecuting commands:")
     for command in commands_data['commands']:
