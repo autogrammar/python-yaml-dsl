@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 class Message:
     def __init__(self):
         self.messages = {}
@@ -25,6 +28,35 @@ class Message:
         else:
             print(f"No message found with ID: {id}")
             return None
+
+
+    def list(self, **kwargs):
+        print("\nKeyword arguments:")
+        datetime_from = ''
+        datetime_to = ''
+        for key, value in kwargs.items():
+            print(f"{key}: {value}")
+            if key == 'from':
+                datetime_from = datetime.strptime(value, "%Y-%m-%d")
+            if key == 'to':
+                datetime_to = datetime.strptime(value, "%Y-%m-%d")
+
+        print("Messages between", datetime_from, "and", datetime_to, ":")
+
+
+
+    def list_item2(self, from_date: str, to_date: str):
+        datetime_from = datetime.strptime(from_date, "%Y-%m-%d")
+        datetime_to = datetime.strptime(to_date, "%Y-%m-%d")
+        print("Messages between", datetime_from, "and", datetime_to, ":")
+        # Sortowanie po datach
+        message_list = []
+        for message_id, message in self.messages.items():
+            datetime_message = datetime.strptime(message['created_at'], '%Y-%m-%d')
+            if datetime_message >= datetime_from and datetime_message <= datetime_to:
+                message_list.append(message)
+        return message_list
+
 
     def delete(self, id):
         id = int(id)

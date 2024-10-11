@@ -32,6 +32,7 @@ Message:
       python: "{}.py {action} {modifier} {public}"
       sql: "{}.sql {action} {modifier} {public}"
       api: "{}.curl {action} {modifier} {public}"
+      class: "{} {action} {modifier} {public}"
       public:
         from: datetime
         to: datetime
