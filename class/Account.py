@@ -1,6 +1,6 @@
 import yaml
 
-class Account:
+class ClassYamlAccount:
     def __init__(self):
         self.connected = False
         self.email = None
@@ -31,3 +31,7 @@ class Account:
         else:
             print("No active connection to disconnect")
             return False
+
+
+# Backward-compatible alias for class/runner.py (module name == class name lookup).
+Account = ClassYamlAccount

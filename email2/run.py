@@ -1,6 +1,6 @@
 import yaml
 import sys
-from Account import Account
+from Account import EmailAccount as Account
 from Message import Message
 import shlex
 

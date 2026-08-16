@@ -1,6 +1,6 @@
 import yaml
 
-class Account:
+class EmailAccount:
     def __init__(self):
         self.private_data = self.load_private_data()
 
